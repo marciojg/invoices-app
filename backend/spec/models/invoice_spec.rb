@@ -16,5 +16,15 @@ RSpec.describe Invoice do
 
       it { is_expected.to validate_uniqueness_of(:number) }
     end
+
+    context 'with invalid emails' do
+      subject(:invoice) { build(:invoice, emails: ['foobar.com']) }
+
+      it do
+        invoice.valid?
+
+        expect(invoice.errors.key?(:emails)).to be true
+      end
+    end
   end
 end
