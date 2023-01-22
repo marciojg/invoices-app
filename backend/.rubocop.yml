@@ -1,0 +1,16 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+
+AllCops:
+  # Do not suggest extensions on every execution (breaks code when auto-formatting)
+  SuggestExtensions: false
+  # Prevent RuboCop from exploding when it finds an older-than-2.4 .ruby-version
+  TargetRubyVersion: 3.1
+  DisabledByDefault: true
+  Exclude:
+  - '.git/**/*'
+  - 'tmp/**/*'
+  - 'db/schema.rb'
+  - 'db/migrate/**/*'
+  - 'config/**/*'
