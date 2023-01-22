@@ -16,7 +16,7 @@ group :development, :test do
   gem "simplecov-html", require: false
   gem "simplecov_json_formatter", require: false
   gem "rspec-rails"
-  gem "factory_bot"
+  gem "factory_bot_rails"
   gem "ffaker"
   gem "shoulda-matchers"
   gem "rubocop", require: false
