@@ -11,7 +11,7 @@ gem 'pg'
 gem 'puma', '~> 5.0'
 gem 'rack-cors'
 gem 'rails', '~> 7.0.4', '>= 7.0.4.1'
-gem 'u-case'
+gem 'u-case', require: 'u-case/with_activemodel_validation'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
