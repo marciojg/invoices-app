@@ -7,6 +7,10 @@ class Invoice < ApplicationRecord
 
   validate :validate_emails
 
+  def self.ransackable_attributes(auth_object = nil)
+    super & %w[number reference_date]
+  end
+
   private
 
   def validate_emails
