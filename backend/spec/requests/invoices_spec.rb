@@ -74,4 +74,40 @@ RSpec.describe 'Invoices' do
       it { expect(data['invoice']).to be_nil }
     end
   end
+
+  describe 'POST /create' do
+    subject(:create) { post invoices_url, headers:, params: }
+
+    let(:params) { { invoice: invoice_attributes }.to_json }
+
+    context 'with valid parameters' do
+      let(:invoice_attributes) { attributes_for(:invoice) }
+
+      it 'creates a new Invoice' do
+        expect { create }.to change(Invoice, :count).by(1)
+      end
+
+      context 'with success response' do
+        before { create }
+
+        it { expect(response).to have_http_status :created }
+        it { expect(data['invoice']).not_to be_nil }
+      end
+    end
+
+    context 'with invalid parameters' do
+      let(:invoice_attributes) { attributes_for(:invoice, number: nil) }
+
+      it 'does not create a new Invoice' do
+        expect { create }.not_to change(Invoice, :count)
+      end
+
+      context 'with errors response' do
+        before { create }
+
+        it { expect(response).to have_http_status :unprocessable_entity }
+        it { expect(data['invoice']).to be_nil }
+      end
+    end
+  end
 end
