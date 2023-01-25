@@ -7,9 +7,10 @@ module Invoices::SendEmail
     validates :params, kind: ActionController::Parameters
 
     def call!
-      invoice_params = params.require(:invoice).permit(:id, emails: [])
+      invoice_id_params = params.permit(:invoice_id)
+      invoice_email_params = params.require(:invoice).permit(emails: [])
 
-      Success result: { **invoice_params }
+      Success result: { **invoice_id_params.merge(invoice_email_params) }
     rescue ActionController::ParameterMissing => e
       Failure :parameter_missing, result: { message: e.message }
     end
