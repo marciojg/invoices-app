@@ -50,4 +50,28 @@ RSpec.describe 'Invoices' do
       it { expect(data['invoices'].size).to eq 2 }
     end
   end
+
+  describe 'GET /invoices/:id' do
+    subject(:show) { get invoice_url(id), headers: }
+
+    before do
+      create_list(:invoice, 2)
+
+      show
+    end
+
+    context 'with valid id' do
+      let(:id) { Invoice.last.id }
+
+      it { expect(response).to have_http_status :ok }
+      it { expect(data['invoice']).not_to be_nil }
+    end
+
+    context 'with invalid id' do
+      let(:id) { SecureRandom.uuid }
+
+      it { expect(response).to have_http_status :not_found }
+      it { expect(data['invoice']).to be_nil }
+    end
+  end
 end
