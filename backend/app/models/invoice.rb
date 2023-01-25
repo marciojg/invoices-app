@@ -17,6 +17,6 @@ class Invoice < ApplicationRecord
     return if emails.blank?
     return unless emails.any? { |email| (email =~ URI::MailTo::EMAIL_REGEXP).nil? }
 
-    errors.add :emails, 'some of the emails are invalid'
+    errors.add :emails, 'some of the ones are invalid'
   end
 end
