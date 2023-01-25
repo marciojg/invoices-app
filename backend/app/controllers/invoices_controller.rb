@@ -26,4 +26,16 @@ class InvoicesController < ApplicationController
       render json: { data: result.data }, status: :unprocessable_entity
     end
   end
+
+  def send_email
+    result = Invoices::SendEmail::Process.call(params:)
+
+    return render nothing: true, staus: :ok if result.success?
+
+    if result.type == :record_not_found
+      render json: { data: result.data }, status: :not_found
+    else
+      render json: { data: result.data }, status: :internal_server_error
+    end
+  end
 end

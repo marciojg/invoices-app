@@ -110,4 +110,46 @@ RSpec.describe 'Invoices' do
       end
     end
   end
+
+  describe 'POST /invoices/:id/send_email' do
+    subject(:send_email) { post invoice_send_email_url(id), headers:, params: }
+
+    let(:params) { { invoice: { emails: } }.to_json }
+
+    before { send_email }
+
+    context 'with valid parameters' do
+      let(:id) { create(:invoice).id }
+
+      context 'with new emails' do
+        let(:emails) { ['foo@bar.com'] }
+
+        it { expect(response).to have_http_status :ok }
+        it { expect(response.body.strip).to be_empty }
+      end
+
+      context 'without new emails' do
+        let(:emails) { [] }
+
+        it { expect(response).to have_http_status :ok }
+        it { expect(response.body.strip).to be_empty }
+      end
+    end
+
+    context 'with invalid parameters' do
+      context 'when not found a resource' do
+        let(:id) { SecureRandom.uuid }
+        let(:emails) { [] }
+
+        it { expect(response).to have_http_status :not_found }
+      end
+
+      context 'when has an invalid body' do
+        let(:id) { create(:invoice).id }
+        let(:params) { { foo: { emails: [] } }.to_json }
+
+        it { expect(response).to have_http_status :internal_server_error }
+      end
+    end
+  end
 end
