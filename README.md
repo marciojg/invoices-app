@@ -35,7 +35,7 @@ Sobre outras gems, destacaria as gems que me auxiliaram nos testes e qualidade d
 
 ### Coisas que podem melhorar
 
-Do que está construído enxergo que é possível melhorar transferindo as validações do modelo para os casos de uso. Como precisei fazer algumas validações manuais vi que seria necessário rescrever/duplicar muito código pois iria precisar replicar algumas validações em mais de um `Micro::Case`. Como não gostei muito dessa abordagem preferi manter no modelo, mesmo que isso fira um pouco o conceito que a gem oferece.
+Do que está construído enxergo que é possível melhorar transferindo as validações do modelo para os casos de uso. Como precisei fazer algumas validações manuais vi que seria necessário reescrever/duplicar muito código pois iria precisar replicar algumas validações em mais de um `Micro::Case`. Como não gostei muito dessa abordagem preferi manter no modelo, mesmo que isso fira um pouco o conceito que a gem oferece.
 
 Acredito também que seria interessante implementar serializers para evitar a exposição de atributos que não agregam o futuro front. Somente expõe regra de negócio sem necessidade. Mas neste primeiro momento julguei que da pra seguir de boa sem.
 
