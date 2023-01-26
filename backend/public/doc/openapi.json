@@ -1,0 +1,367 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Ivoice Backend - Husky",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3030"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Invoice",
+      "description": "Everything about Invoice"
+    },
+    {
+      "name": "store",
+      "description": "Access to Petstore orders",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/invoices": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "List of Invoices",
+        "description": "List of Invoices",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q[number_eq]",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Filter by equal number"
+          },
+          {
+            "in": "query",
+            "name": "q[reference_data]",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by equal reference_date"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Invoice"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Creates a new Invoice",
+        "description": "Creates a new Invoice",
+        "requestBody": {
+          "description": "Creates a new Invoice",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Invoice"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{id}": {
+      "get": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Show the Invoice",
+        "description": "Show the Invoice",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Invoice ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "UUID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/404Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice_id}/send_email": {
+      "post": {
+        "tags": [
+          "Invoice"
+        ],
+        "summary": "Send Invoice by Email",
+        "description": "Send Invoice by Email",
+        "requestBody": {
+          "description": "Update the list of emails to send a invoice",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendEmailInvoice"
+              }
+            }
+          },
+          "required": false
+        },
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "description": "Invoice ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "UUID"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/404Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/500Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "422Error": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "404Error": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "record_not_found": {
+                "type": "boolean",
+                "example": true
+              }
+            }
+          }
+        }
+      },
+      "500Error": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "SendEmailInvoice": {
+        "required": [
+          "invoice"
+        ],
+        "type": "object",
+        "properties": {
+          "invoice": {
+            "type": "object",
+            "properties": {
+              "emails": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": [
+                    "teste@teste.com"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "invoice": {
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "integer",
+                "format": "int64",
+                "example": 112221
+              },
+              "reference_date": {
+                "type": "string",
+                "example": "2020-10-10"
+              },
+              "company_data": {
+                "type": "string",
+                "example": "Foo bar"
+              },
+              "billing_data": {
+                "type": "string",
+                "example": "Bar fazz"
+              },
+              "value_cents": {
+                "type": "integer",
+                "format": "int64",
+                "example": 5048
+              },
+              "emails": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "teste@teste.com"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InvoiceResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "invoice": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 112221
+                  },
+                  "reference_date": {
+                    "type": "string",
+                    "example": "2020-10-10"
+                  },
+                  "company_data": {
+                    "type": "string",
+                    "example": "Foo bar"
+                  },
+                  "billing_data": {
+                    "type": "string",
+                    "example": "Bar fazz"
+                  },
+                  "value_cents": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 5048
+                  },
+                  "emails": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "teste@teste.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
