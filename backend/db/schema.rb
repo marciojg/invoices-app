@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_22_173834) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_26_001006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -23,6 +23,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_22_173834) do
     t.integer "value_cents", default: 0, null: false
     t.string "value_currency", default: "BRL", null: false
     t.string "emails", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email"
+    t.string "token_digest"
+    t.string "renew_token_digest"
+    t.boolean "email_confirmed", default: false
+    t.string "confirm_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
