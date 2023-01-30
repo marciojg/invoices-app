@@ -23,3 +23,6 @@ Style/RescueStandardError:
 
 RSpec/NestedGroups:
   MaxNesting: 4
+
+Style/ParallelAssignment:
+  Enabled: false
