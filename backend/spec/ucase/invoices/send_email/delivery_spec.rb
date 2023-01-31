@@ -10,7 +10,7 @@ RSpec.describe Invoices::SendEmail::Delivery do
     let(:params) { { id: invoice.id, emails: [], invoice: } }
 
     context 'when delivery with success' do
-      it 'when invoice_email is called' do
+      it 'enqueue an invoice email' do
         expect { call }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
       end
 
