@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Invoices::SendEmail::Delivery do
-  include ActiveJob::TestHelper
-
   describe '.call' do
     subject(:call) { described_class.call(**params) }
 
