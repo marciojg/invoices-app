@@ -93,7 +93,6 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     json (2.6.3)
-    jwt (2.6.0)
     kind (5.10.0)
     loofah (2.19.1)
       crass (~> 1.0.2)
@@ -251,7 +250,6 @@ DEPENDENCIES
   database_cleaner-active_record
   factory_bot_rails
   ffaker
-  jwt
   money-rails
   pg
   puma (~> 5.0)
