@@ -18,4 +18,20 @@ RSpec.describe UserMailer do
       it { expect(mail.body.encoded).to match('click the URL below.') }
     end
   end
+
+  describe '#renew_registration' do
+    let(:user) { create(:user, email: 'foo@bar.com') }
+    let(:mail) { described_class.with(user:, renew_token: 'foo').renew_registration }
+
+    context 'with headers renders' do
+      it { expect(mail.subject).to eq('Renew your registration') }
+      it { expect(mail.to).to eq(['foo@bar.com']) }
+      it { expect(mail.from).to eq(['noreply@example.com']) }
+    end
+
+    context 'with body renders' do
+      it { expect(mail.body.encoded).to match('token: foo') }
+      it { expect(mail.body.encoded).to match('click the URL below.') }
+    end
+  end
 end
