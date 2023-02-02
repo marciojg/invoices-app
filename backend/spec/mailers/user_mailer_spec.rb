@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe UserMailer do
-  let(:user) { create(:user, email: 'foo@bar.com', confirm_token: 'bar') }
+  let(:user) { create(:user, email: 'foo@bar.com') }
 
   describe '#registration_confirmation' do
-    let(:mail) { described_class.with(user:, token: 'foo').registration_confirmation }
+    let(:mail) { described_class.with(user:, token: 'foo', confirm_token: 'bar').registration_confirmation }
 
     context 'with headers renders' do
       it { expect(mail.subject).to eq('Registration Confirmation') }
@@ -22,7 +22,7 @@ RSpec.describe UserMailer do
   end
 
   describe '#renew_registration' do
-    let(:mail) { described_class.with(user:, renew_token: 'foo').renew_registration }
+    let(:mail) { described_class.with(user:, renew_token: 'foo', confirm_token: 'bar').renew_registration }
 
     context 'with headers renders' do
       it { expect(mail.subject).to eq('Renew your registration') }

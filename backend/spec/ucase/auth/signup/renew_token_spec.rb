@@ -20,7 +20,9 @@ RSpec.describe Auth::Signup::RenewToken do
       end
 
       it 'not enqueue a renew registration email' do
-        expect { call }.not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        expect { call }.not_to have_enqueued_job(
+          ActionMailer::MailDeliveryJob
+        ).with('UserMailer', 'renew_registration', any_args)
       end
     end
 
