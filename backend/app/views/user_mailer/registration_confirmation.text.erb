@@ -6,4 +6,4 @@ This is your token: <%= @token %>
 
 To confirm your registration click the URL below.
 
-<%= auth_confirm_email_url(params: { email: @user.email, confirm_token: @user.confirm_token }) %>
+<%= auth_confirm_email_url(params: { email: @user.email, confirm_token: @confirm_token }) %>

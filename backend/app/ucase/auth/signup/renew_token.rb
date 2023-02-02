@@ -13,8 +13,8 @@ module Auth::Signup
         renew_token:
       )
 
-      # It is necessary to send the `renew_token` as a parameter because the attribute of the user is encrypted
-      UserMailer.with(user: user.reload, renew_token:).renew_registration.deliver_later
+      # It is necessary to send the `renew_token` and `confirm_token` because the attribute of the user is encrypted
+      UserMailer.with(user: user.reload, renew_token:, confirm_token:).renew_registration.deliver_later
       Success result: attributes
     end
   end
