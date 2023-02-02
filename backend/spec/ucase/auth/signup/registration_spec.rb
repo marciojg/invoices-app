@@ -36,7 +36,9 @@ RSpec.describe Auth::Signup::Registration do
       end
 
       it 'enqueue a registration confirmation email' do
-        expect { call }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        expect { call }.to have_enqueued_job(
+          ActionMailer::MailDeliveryJob
+        ).with('UserMailer', 'registration_confirmation', any_args)
       end
     end
   end

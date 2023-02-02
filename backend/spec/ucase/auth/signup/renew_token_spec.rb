@@ -34,7 +34,9 @@ RSpec.describe Auth::Signup::RenewToken do
       it { expect(call.data[:user].email_confirmed).to be_falsey }
 
       it 'enqueue a renew registration email' do
-        expect { call }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        expect { call }.to have_enqueued_job(
+          ActionMailer::MailDeliveryJob
+        ).with('UserMailer', 'renew_registration', any_args)
       end
     end
   end
