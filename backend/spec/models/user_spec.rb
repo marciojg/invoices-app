@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe User do
   it { is_expected.to have_secure_password(:token) }
   it { is_expected.to have_secure_password(:renew_token) }
+  it { is_expected.to have_secure_password(:confirm_token) }
 
   describe 'email validations' do
     it { is_expected.to validate_presence_of(:email) }
