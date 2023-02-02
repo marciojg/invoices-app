@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe AuthController do
+  describe 'routing' do
+    it 'routes to #signup' do
+      expect(post: '/auth/signup').to route_to('auth#signup')
+    end
+  end
+end

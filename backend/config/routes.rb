@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   end
 
   get 'api-doc', to: 'documentation#api_doc'
+
+  namespace :auth do
+    post :signup
+  end
 end
