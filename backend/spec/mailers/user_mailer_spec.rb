@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe UserMailer do
+  let(:user) { create(:user, email: 'foo@bar.com', confirm_token: 'bar') }
+
   describe '#registration_confirmation' do
-    let(:user) { create(:user, email: 'foo@bar.com') }
     let(:mail) { described_class.with(user:, token: 'foo').registration_confirmation }
 
     context 'with headers renders' do
@@ -15,12 +16,12 @@ RSpec.describe UserMailer do
 
     context 'with body renders' do
       it { expect(mail.body.encoded).to match('token: foo') }
-      it { expect(mail.body.encoded).to match('click the URL below.') }
+      it { expect(mail.body.encoded).to match('confirm_token=bar') }
+      it { expect(mail.body.encoded).to match('email=foo%40bar.com') }
     end
   end
 
   describe '#renew_registration' do
-    let(:user) { create(:user, email: 'foo@bar.com') }
     let(:mail) { described_class.with(user:, renew_token: 'foo').renew_registration }
 
     context 'with headers renders' do
@@ -32,6 +33,9 @@ RSpec.describe UserMailer do
     context 'with body renders' do
       it { expect(mail.body.encoded).to match('token: foo') }
       it { expect(mail.body.encoded).to match('click the URL below.') }
+      it { expect(mail.body.encoded).to match('confirm_token=bar') }
+      it { expect(mail.body.encoded).to match('email=foo%40bar.com') }
+      it { expect(mail.body.encoded).to match('renew=true') }
     end
   end
 end
