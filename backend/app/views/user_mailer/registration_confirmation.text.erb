@@ -1,0 +1,9 @@
+Hi <%= @user.email %>,
+
+Thanks for registering!
+
+This is your token: <%= @token %>
+
+To confirm your registration click the URL below.
+
+<%= auth_confirm_email_url(@user.confirm_token) %>
