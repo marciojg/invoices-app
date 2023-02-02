@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   has_secure_password :token
   has_secure_password :renew_token, validations: false
+  has_secure_password :confirm_token, validations: false
 
   validates :email, presence: true, uniqueness: true
   validate :validate_email
