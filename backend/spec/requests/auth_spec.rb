@@ -84,6 +84,19 @@ RSpec.describe 'Auth' do
     end
   end
 
+  describe 'POST /logout' do
+    subject(:logout) { post auth_logout_url, headers:, params: }
+
+    let(:params) { {}.to_json }
+
+    context 'with success response' do
+      before { logout }
+
+      it { expect(Current.user).to be_nil }
+      it { expect(response).to have_http_status :ok }
+    end
+  end
+
   describe 'GET /confirm_email' do
     subject(:confirm_email) { get auth_confirm_email_url, headers:, params: }
 

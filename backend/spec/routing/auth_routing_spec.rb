@@ -8,6 +8,10 @@ RSpec.describe AuthController do
       expect(post: '/auth/signup').to route_to('auth#signup')
     end
 
+    it 'routes to #logout' do
+      expect(post: '/auth/logout').to route_to('auth#logout')
+    end
+
     it 'routes to #confirm_email' do
       expect(get: '/auth/confirm_email').to route_to('auth#confirm_email')
     end

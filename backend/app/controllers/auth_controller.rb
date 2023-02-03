@@ -12,6 +12,12 @@ class AuthController < ApplicationController
     end
   end
 
+
+  def logout
+    Current.user = nil
+    render json: {}, status: :ok
+  end
+
   def confirm_email
     result = Auth::ConfirmEmail::Process.call(params:)
 
