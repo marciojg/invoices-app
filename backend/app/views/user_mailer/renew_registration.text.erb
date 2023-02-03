@@ -1,0 +1,11 @@
+Hi <%= @user.email %>,
+
+You are renewing your registration.
+
+This is your new token: <%= @renew_token %>
+
+You can use this new token after confirming your account.
+
+To confirm your registration click the URL below.
+
+<%= auth_confirm_email_url(params: { email: @user.email, confirm_token: @confirm_token, renew: true}) %>

@@ -4,6 +4,16 @@ volumes:
   database_volume:
 
 services:
+  mailcatcher:
+    restart: on-failure
+    container_name: mailcatcher-container
+    image: dockage/mailcatcher
+    ports:
+      - "1025:1025"
+      - "1080:1080"
+    depends_on:
+      - backend
+
   backend:
     container_name: backend-container
     stdin_open: true
