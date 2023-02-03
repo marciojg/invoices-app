@@ -11,14 +11,18 @@ RSpec.describe Invoices::SendEmail::Delivery do
 
     context 'when delivery with success' do
       it 'enqueue an invoice email' do
-        expect { call }.to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        expect { call }.to have_enqueued_job(
+          ActionMailer::MailDeliveryJob
+        ).with('InvoiceMailer', 'invoice_email', any_args)
       end
 
       it { expect(call.success?).to be true }
     end
 
     context 'when raise exception' do
-      before { allow(InvoiceMailer).to receive(:with).with(email: 'foo@bar.com').and_raise(StandardError) }
+      before do
+        allow(InvoiceMailer).to receive(:with).with(email: 'foo@bar.com', invoice:).and_raise(StandardError)
+      end
 
       it { expect(call.failure?).to be true }
       it { expect(call.data.key?(:message)).to be true }

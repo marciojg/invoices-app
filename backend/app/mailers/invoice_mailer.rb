@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 class InvoiceMailer < ApplicationMailer
-  default from: 'notifications@example.com'
-
   def invoice_email
-    @email = params[:email]
-    @url = 'http://example.com/login'
-    mail(to: @email, subject: 'Welcome to My Awesome Site')
+    @email, @invoice = params[:email], params[:invoice]
+    attachments['invoice.pdf'] = File.read('public/example.pdf')
+    mail(to: @email, subject: "Invoice number: #{@invoice.number}")
   end
 end
