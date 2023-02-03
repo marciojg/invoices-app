@@ -83,4 +83,27 @@ RSpec.describe 'Auth' do
       end
     end
   end
+
+  describe 'GET /confirm_email' do
+    subject(:confirm_email) { get auth_confirm_email_url, headers:, params: }
+
+    let(:params) { { email: 'foo@bar.com', confirm_token: 'foo' } }
+
+    context 'with success response' do
+      before do
+        create(:user, **params)
+        confirm_email
+      end
+
+      it { expect(response).to have_http_status :ok }
+      it { expect(data['confirm_email']).to be_truthy }
+    end
+
+    context 'with errors response' do
+      before { confirm_email }
+
+      it { expect(response).to have_http_status :bad_request }
+      it { expect(data['confirm_email']).to be_nil }
+    end
+  end
 end
