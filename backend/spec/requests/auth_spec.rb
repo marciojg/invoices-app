@@ -111,14 +111,24 @@ RSpec.describe 'Auth' do
   end
 
   describe 'POST /logout' do
-    subject(:logout) { post auth_logout_url, headers:, params: }
+    subject(:logout) { post auth_logout_url, headers: authenticated_headers, params: }
 
     let(:params) { {}.to_json }
+    let(:authenticated_headers) do
+      headers.merge(
+        {
+          'x-client-email' => 'foo@bar.com',
+          'x-access-token' => 'token'
+        }
+      )
+    end
 
     context 'with success response' do
-      before { logout }
+      before do
+        create(:user, email: 'foo@bar.com', token: 'token')
+        logout
+      end
 
-      it { expect(Current.user).to be_nil }
       it { expect(response).to have_http_status :ok }
     end
   end

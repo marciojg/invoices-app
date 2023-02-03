@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AuthController < ApplicationController
+  before_action :authenticated?, only: [:logout]
+
   def signup
     result = Auth::Signup::Process.call(params:)
 
