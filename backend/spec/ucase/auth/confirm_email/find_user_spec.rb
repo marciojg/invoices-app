@@ -38,8 +38,8 @@ RSpec.describe Auth::ConfirmEmail::FindUser do
     context 'when not found' do
       let(:email) { 'anotherfoo@bar.com' }
 
-      it { expect(call.success?).to be true }
-      it { expect(call.data[:user]).to be_nil }
+      it { expect(call.failure?).to be true }
+      it { expect(call.type).to eq(:record_not_found) }
     end
   end
 end
