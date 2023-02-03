@@ -5,5 +5,6 @@ FactoryBot.define do
     email { FFaker::Internet.email }
     token { SecureRandom.hex }
     confirm_token { SecureRandom.hex }
+    email_confirmed { true }
   end
 end
