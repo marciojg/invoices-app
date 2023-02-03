@@ -9,7 +9,15 @@ RSpec.describe Auth::ConfirmEmail::Process do
     context 'with valid attributes' do
       let(:params) { ActionController::Parameters.new(email:, confirm_token:, renew:) }
 
-      let(:user) { create(:user, confirm_token:, email_confirmed: false) }
+      let(:user) do
+        create(
+          :user,
+          token: 'token',
+          renew_token: 'renew',
+          confirm_token:,
+          email_confirmed: false
+        )
+      end
 
       let(:email) { user.email }
       let(:confirm_token) { 'foo' }
