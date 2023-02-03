@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class InvoicesController < ApplicationController
+  before_action :authenticated?
+
   def index
     data = Invoices::List::Process.call(params:).data
 

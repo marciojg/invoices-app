@@ -6,11 +6,15 @@ RSpec.describe 'Invoices' do
   let(:headers) do
     {
       'ACCEPT' => 'application/json',
-      'CONTENT_TYPE' => 'application/json'
+      'CONTENT_TYPE' => 'application/json',
+      'x-client-email' => 'foo@bar.com',
+      'x-access-token' => 'token'
     }
   end
 
   let(:data) { JSON.parse(response.body)['data'] }
+
+  before { create(:user, email: 'foo@bar.com', token: 'token') }
 
   describe 'GET /invoices' do
     subject(:index) { get invoices_url, headers:, params: }
@@ -76,7 +80,7 @@ RSpec.describe 'Invoices' do
   end
 
   describe 'POST /create' do
-    subject(:create) { post invoices_url, headers:, params: }
+    subject(:invoice_create) { post invoices_url, headers:, params: }
 
     let(:params) { { invoice: invoice_attributes }.to_json }
 
@@ -84,11 +88,11 @@ RSpec.describe 'Invoices' do
       let(:invoice_attributes) { attributes_for(:invoice) }
 
       it 'creates a new Invoice' do
-        expect { create }.to change(Invoice, :count).by(1)
+        expect { invoice_create }.to change(Invoice, :count).by(1)
       end
 
       context 'with success response' do
-        before { create }
+        before { invoice_create }
 
         it { expect(response).to have_http_status :created }
         it { expect(data['invoice']).not_to be_nil }
@@ -99,11 +103,11 @@ RSpec.describe 'Invoices' do
       let(:invoice_attributes) { attributes_for(:invoice, number: nil) }
 
       it 'does not create a new Invoice' do
-        expect { create }.not_to change(Invoice, :count)
+        expect { invoice_create }.not_to change(Invoice, :count)
       end
 
       context 'with errors response' do
-        before { create }
+        before { invoice_create }
 
         it { expect(response).to have_http_status :unprocessable_entity }
         it { expect(data['invoice']).to be_nil }
