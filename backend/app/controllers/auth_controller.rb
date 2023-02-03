@@ -12,6 +12,16 @@ class AuthController < ApplicationController
     end
   end
 
+  def login
+    result = Auth::Login::Process.call(params:)
+
+    if result.success?
+      Current.user = result.data[:user]
+      render json: { data: { login: true } }, status: :ok
+    else
+      render json: { data: result.data }, status: :bad_request
+    end
+  end
 
   def logout
     Current.user = nil

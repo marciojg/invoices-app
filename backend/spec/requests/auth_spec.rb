@@ -84,6 +84,32 @@ RSpec.describe 'Auth' do
     end
   end
 
+  describe 'POST /login' do
+    subject(:login) { post auth_login_url, headers:, params: }
+
+    let(:params) { { user: { email: 'foo@bar.com', token: 'foo' } }.to_json }
+
+    context 'with success response' do
+      before do
+        create(:user, email: 'foo@bar.com', token: 'foo', email_confirmed: true)
+        login
+      end
+
+      it { expect(response).to have_http_status :ok }
+      it { expect(data['login']).to be_truthy }
+    end
+
+    context 'with errors response' do
+      before do
+        create(:user, email: 'foo@bar.com', token: 'foo', email_confirmed: false)
+        login
+      end
+
+      it { expect(response).to have_http_status :bad_request }
+      it { expect(data['login']).to be_nil }
+    end
+  end
+
   describe 'POST /logout' do
     subject(:logout) { post auth_logout_url, headers:, params: }
 

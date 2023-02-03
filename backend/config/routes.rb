@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'api-doc', to: 'documentation#api_doc' if Rails.env.development? || Rails.env.test?
 
   namespace :auth do
+    post :login
     post :logout
     post :signup
     get :confirm_email
