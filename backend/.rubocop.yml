@@ -22,7 +22,7 @@ Style/RescueStandardError:
   Enabled: false
 
 RSpec/NestedGroups:
-  MaxNesting: 5
+  MaxNesting: 7
 
 Style/ParallelAssignment:
   Enabled: false
