@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
   end
 
   def current_user_email
-    request.headers['x-client']
+    request.headers['x-client-email']
   end
 
   def current_user_token
