@@ -6,7 +6,9 @@ Ao clonar o projeto, vá até a pasta raiz do projeto e execute:
   docker-compose up -d
 ```
 
-Com isso a aplicação já estará de pé, respondendo no endereço: `http://localhost:3030`. A documentação a seguir deve ajudar a testar:
+Com isso a aplicação já estará de pé, respondendo no endereço: `http://localhost:3030`. O servidor de email local vai responder no endereço `http://localhost:1080`.
+
+A documentação a seguir deve ajudar a testar:
 
 - [Postman collection](backend/public/doc/postman_collection.json)
 - [Swagger HTML arquivo](backend/public/doc/openapi.html)
@@ -20,23 +22,19 @@ Para rodar os testes, basta executar:
   docker-compose run --rm backend rspec
 ```
 
-Para conferir a cobertura de 100% o arquivo de coverage está neste [path](backend/coverage/index.html) `backend/coverage/index.html`
+### Covertura de código
+
+![code-coverage](backend/public/coverage.png "Code Coverage")
 
 ### Solução:
 
-O racional utilizado foi criar o máximo da regra de negócio primeiro, antes do requisitos não funcionais e frontend (que não rolou de fazer até nesse momento :0 ).
-
-Primeiramente procurei executar cada passo produzindo código e teste, seguindo a lógica da camada mais interna para a camada mais externa. Fiz uso da gem `u-case` para auxiliar neste processo, e como a utilizei pela primeira vez, foi uma experiência interessante. Pois como já tinha interesse em testá-la, foi juntar o útil ao agradável. Anteriormente somente havia utilizado soluções mais caseiras para concentrar a lógica de negócios.
-
-Procurei deixar o máximo de lógica de um caso de uso concentrada nos conjuntos de `Micro::Case`'s, onde o controller por exemplo teria a única responsabilidade de encaminhar params e renderizar json.
-
-Sobre outras gems, destacaria as gems que me auxiliaram nos testes e qualidade de código como `rspec`, `shoulda-matchers`, `factory_bot_rails`, `rubocop` e `simplecov` que é sempre um prazer usar esse grupinho de gems. :)
-
+Priorizei o backend e o uso da gem `u-case` para testa-la principalmente pois ela permite uma arquitetura orientada a caso de uso, deixando o código mais preparado para evolução e testes isolados.
 
 ### Coisas que podem melhorar
 
-Do que está construído enxergo que é possível melhorar transferindo as validações do modelo para os casos de uso. Como precisei fazer algumas validações manuais vi que seria necessário reescrever/duplicar muito código pois iria precisar replicar algumas validações em mais de um `Micro::Case`. Como não gostei muito dessa abordagem preferi manter no modelo, mesmo que isso fira um pouco o conceito que a gem oferece.
-
-Acredito também que seria interessante implementar serializers para evitar a exposição de atributos que não agregam o futuro front. Somente expõe regra de negócio sem necessidade. Mas neste primeiro momento julguei que da pra seguir de boa sem.
-
-Pegando gancho nos serializers também acho que dá pra evoluir os tratamentos de erro para serem mais especialistas.
+- Transferir validações do modelo para os casos de uso, tive dificuldade de lidar com os testes manuais `validate: method`.
+- Remover duplicações de casos de uso.
+- Implementar serializers
+- Serializar erros específicos e tratar com mais carinhos os status code em caso de erro.
+- Remover sobrescrita do método `attributes` de um `Micro::Case`, foi necessários pq não vejo o pq retornar um hash usando string como chave e sugerir essa feature na gem.
+- Evitar uso de cookie de sessão para melhorar a segurança.
