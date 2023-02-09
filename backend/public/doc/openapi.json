@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Ivoice Backend - Husky",
+    "title": "Ivoices Backend",
     "version": "1.0.11"
   },
   "servers": [
@@ -15,21 +15,90 @@
       "description": "Everything about Invoice"
     },
     {
-      "name": "store",
-      "description": "Access to Petstore orders",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://swagger.io"
-      }
-    },
-    {
-      "name": "user",
+      "name": "Auth",
       "description": "Operations about user"
     }
   ],
   "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Signup or renew token of user",
+        "description": "Signup or renew token of user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Signup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signup or renew token successfull"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Authenticate a user",
+        "description": "Authenticate a user",
+        "requestBody": {
+          "description": "Authenticate a user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully authenticated. The session ID is returned in a cookie named `_invoice_api_key`. You need to include this cookie in subsequent requests.\n",
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string",
+                  "example": "_invoice_api_key=abcde12345; Path=/; HttpOnly"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid login"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logout a user",
+        "description": "Logout a user",
+        "responses": {
+          "200": {
+            "description": "Logout successfull"
+          }
+        }
+      }
+    },
     "/invoices": {
       "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "tags": [
           "Invoice"
         ],
@@ -216,6 +285,13 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "_invoice_api_key"
+      }
+    },
     "schemas": {
       "422Error": {
         "type": "object",
@@ -274,6 +350,38 @@
                     "teste@teste.com"
                   ]
                 }
+              }
+            }
+          }
+        }
+      },
+      "Signup": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "teste@teste.com"
+              }
+            }
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "teste@teste.com"
+              },
+              "token": {
+                "type": "string",
+                "example": "foobar"
               }
             }
           }
