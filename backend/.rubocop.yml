@@ -26,3 +26,6 @@ RSpec/NestedGroups:
 
 Style/ParallelAssignment:
   Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
