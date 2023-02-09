@@ -6,24 +6,14 @@ class ApplicationController < ActionController::API
   def authenticated?
     authenticate!
 
-    render json: { error: 'unauthorized' }, status: :unauthorized if Current.user.blank?
+    return if Current.user.present?
+
+    render json: { error: 'unauthorized' }, status: :unauthorized
   end
 
   def authenticate!
-    return if Current.user.present?
+    return if session[:current_user_email].blank?
 
-    user = User.find_by(email: current_user_email, email_confirmed: true)
-
-    return if user.blank?
-
-    Current.user = user if user.authenticate_token(current_user_token)
-  end
-
-  def current_user_email
-    request.headers['x-client-email']
-  end
-
-  def current_user_token
-    request.headers['x-access-token']
+    Current.user ||= User.find_by(email: session[:current_user_email], email_confirmed: true)
   end
 end

@@ -17,7 +17,7 @@ class AuthController < ApplicationController
     result = Auth::Login::Process.call(params:)
 
     if result.success?
-      Current.user = result.data[:user]
+      session[:current_user_email] = result.data[:user].email
       render json: { data: { login: true } }, status: :ok
     else
       render json: { data: result.data }, status: :bad_request
@@ -25,7 +25,7 @@ class AuthController < ApplicationController
   end
 
   def logout
-    Current.user = nil
+    Current.user = session[:current_user_email] = nil
     render json: {}, status: :ok
   end
 
@@ -33,7 +33,7 @@ class AuthController < ApplicationController
     result = Auth::ConfirmEmail::Process.call(params:)
 
     if result.success?
-      Current.user = result.data[:user]
+      session[:current_user_email] = result.data[:user].email
       render json: { data: { confirm_email: true } }, status: :ok
     else
       render json: { data: result.data }, status: :bad_request

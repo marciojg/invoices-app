@@ -6,15 +6,18 @@ RSpec.describe 'Invoices' do
   let(:headers) do
     {
       'ACCEPT' => 'application/json',
-      'CONTENT_TYPE' => 'application/json',
-      'x-client-email' => 'foo@bar.com',
-      'x-access-token' => 'token'
+      'CONTENT_TYPE' => 'application/json'
     }
   end
 
   let(:data) { JSON.parse(response.body)['data'] }
 
-  before { create(:user, email: 'foo@bar.com', token: 'token') }
+  before do
+    allow_any_instance_of(ApplicationController).to receive(:session).and_return(
+      { current_user_email: 'foo@bar.com' }
+    )
+    create(:user, email: 'foo@bar.com', token: 'token', email_confirmed: true)
+  end
 
   describe 'GET /invoices' do
     subject(:index) { get invoices_url, headers:, params: }
