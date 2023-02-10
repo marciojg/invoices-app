@@ -4,6 +4,19 @@ volumes:
   database_volume:
 
 services:
+  swagger:
+    restart: on-failure
+    container_name: swagger-container
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./swagger:/swagger
+    environment:
+      - SWAGGER_JSON=/swagger/openapi.json
+    depends_on:
+      - backend
+
   mailcatcher:
     restart: on-failure
     container_name: mailcatcher-container

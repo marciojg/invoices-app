@@ -11,8 +11,7 @@ Com isso a aplicação já estará de pé, respondendo no endereço: `http://loc
 A documentação a seguir deve ajudar a testar:
 
 - [Postman collection](backend/public/doc/postman_collection.json)
-- [Swagger HTML arquivo](backend/public/doc/openapi.html)
-- [Swagger Link](http://localhost:3030/api-doc)
+- [Swagger Link](http://localhost:8080)
 
 ### Como testar a aplicação
 

@@ -5,8 +5,6 @@ Rails.application.routes.draw do
     post :send_email
   end
 
-  get 'api-doc', to: 'documentation#api_doc' if Rails.env.development? || Rails.env.test?
-
   namespace :auth do
     post :login
     post :logout
