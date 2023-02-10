@@ -14,7 +14,20 @@ A documentação a seguir deve ajudar a testar:
 - [Swagger HTML arquivo](backend/public/doc/openapi.html)
 - [Swagger Link](http://localhost:3030/api-doc)
 
-### Testes
+### Como testar a aplicação
+
+*Obs. Para melhor funcionamento do cookie de sessão utilize o postman para executar os testes manuais.*
+
+Recomendo que importe o arquivo collection em seu aplicativo postman. Uma vez importado siga os seguintes passos:
+
+- Utilize a rota `auth/signup` para criar um novo usuário.
+- Vá até [este](http://localhost:1080) enderço de email encontre o email com título `Registration Confirmation`.
+- Dentro do email haverá o token que deverá ser utilizado para logar o usuario e um link para ativar o email antes do primeiro login.
+- Copie/cole no postman o endereço para ativar o email.
+- Uma vez ativado, faça o login na rota `auth/login` se utilizando do token informado no email. Caso tenha utilizado o mesmo client postman para ativar o email, este passo não será necessário.
+- Agora pode utilizar todas as rotas de `insurances`.
+
+### Testes unitários
 
 Para rodar os testes, basta executar:
 
