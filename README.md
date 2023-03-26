@@ -56,3 +56,7 @@ Priorizei o backend e o uso da gem `u-case` para testa-la principalmente pois el
 - Serializar erros específicos e tratar com mais carinhos os status code em caso de erro.
 - Remover sobrescrita do método `attributes` de um `Micro::Case`, foi necessários pq não vejo o pq retornar um hash usando string como chave e sugerir essa feature na gem.
 - Evitar uso de cookie de sessão para melhorar a segurança.
+
+### TO-DOs
+
+- [ ] Criar front em react
